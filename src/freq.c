@@ -38,6 +38,7 @@
 #include "pitch.h"
 #include "arch.h"
 #include <assert.h>
+#include "winmath.h"
 
 #define SQUARE(x) ((x)*(x))
 
@@ -291,4 +292,3 @@ void apply_window(float *x) {
     x[WINDOW_SIZE - 1 - i] *= common.half_window[i];
   }
 }
-

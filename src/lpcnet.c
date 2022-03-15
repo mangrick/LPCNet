@@ -153,7 +153,7 @@ LPCNET_EXPORT int lpcnet_init(LPCNetState *lpcnet)
         float prob = .025+.95*i/255.;
         lpcnet->sampling_logit_table[i] = -log((1-prob)/prob);
     }
-    kiss99_srand(&lpcnet->rng, (const unsigned char *)rng_string, strlen(rng_string));
+    kiss99_srand(&lpcnet->rng, (const unsigned char *)rng_string, (int)strlen(rng_string));
     return 0;
 }
 

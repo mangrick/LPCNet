@@ -1,3 +1,8 @@
+# Fork Description
+
+The original LPCNet library uses some features from the C programming language that are not supported from MSVC and therefore does not compile under Windows. 
+I made a couple of changes which were necessary to use the library within Cython (wrapper classes for LPCNet) for Windows. The fork is based on commit "2159b4f85d9839d9627f1843a1cb5ea298c63159" (27th January 2022).
+
 # LPCNet
 
 Low complexity implementation of the WaveRNN-based LPCNet algorithm, as described in:

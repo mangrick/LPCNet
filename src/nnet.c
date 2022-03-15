@@ -39,10 +39,6 @@
 #include "nnet.h"
 #include "nnet_data.h"
 
-#ifdef NO_OPTIMIZATIONS
-#warning Compiling without any vectorization. This code will be very slow
-#endif
-
 
 #define SOFTMAX_HACK
 

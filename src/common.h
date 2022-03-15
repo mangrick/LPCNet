@@ -1,5 +1,4 @@
-
-
+#pragma warning( disable : 4244 ) 
 #ifndef COMMON_H
 #define COMMON_H
 
@@ -37,9 +36,9 @@ static RNN_INLINE float ulaw2lin(float u)
     float s;
     float scale_1 = 32768.f/255.f;
     u = u - 128;
-    s = u >= 0 ? 1 : -1;
-    u = fabs(u);
-    return s*scale_1*(exp(u/128.*LOG256)-1);
+    s = u >= 0 ? 1.f : -1.f;
+    u = (float)fabs(u);
+    return (float)(s*scale_1*(exp(u/128.*LOG256)-1.0));
 }
 
 static RNN_INLINE int lin2ulaw(float x)

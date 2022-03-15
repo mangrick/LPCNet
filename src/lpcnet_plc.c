@@ -30,6 +30,7 @@
 
 #include "lpcnet_private.h"
 #include "lpcnet.h"
+#include "winmath.h"
 
 LPCNET_EXPORT int lpcnet_plc_get_size() {
   return sizeof(LPCNetPLCState);

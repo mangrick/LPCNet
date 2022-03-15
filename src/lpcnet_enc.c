@@ -24,6 +24,7 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#pragma warning( disable : 4305 )
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
