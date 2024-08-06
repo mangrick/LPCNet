@@ -135,8 +135,8 @@ static inline void sgemv_accum16(float *out, const float *weights, int rows, int
    {
       for (j=0;j<cols;j++)
       {
-         const float *w;
-         float *y;
+         const float * __restrict w;
+         float * __restrict y;
          float xj;
          w = &weights[j*col_stride + i];
          xj = x[j];
@@ -170,7 +170,7 @@ static inline void sparse_sgemv_accum16(float *out, const float *w, int rows, co
       cols = *idx++;
       for (j=0;j<cols;j++)
       {
-         float *y;
+         float * __restrict y;
          float xj;
          xj = x[*idx++];
          y = &out[i];
@@ -248,7 +248,7 @@ static inline void sparse_sgemv_accum8x4(float *out, const qweight *w, int rows,
       for (j=0;j<colblocks;j++)
       {
          int pos;
-         float *y;
+         float * __restrict y;
          int xj0, xj1, xj2, xj3;
          pos = (*idx++);
          xj0 = x[pos+0];
@@ -282,7 +282,7 @@ static inline void sgemv_accum8x4(float *out, const qweight *w, int rows, int co
    {
       for (j=0;j<cols;j+=4)
       {
-         float *y;
+         float * __restrict y;
          float xj0, xj1, xj2, xj3;
          xj0 = x[j+0];
          xj1 = x[j+1];
@@ -316,7 +316,7 @@ static inline void sparse_sgemv_accum8x4(float *out, const qweight *w, int rows,
       for (j=0;j<colblocks;j++)
       {
          int pos;
-         float *y;
+         float * __restrict y;
          int xj0, xj1, xj2, xj3;
          pos = (*idx++);
          xj0 = x[pos+0];
@@ -355,7 +355,7 @@ static inline void sparse_sgemv_accum8x4(float *out, const qweight *w, int rows,
       for (j=0;j<cols;j++)
       {
          int pos;
-         float *y;
+         float * __restrict y;
          float xj0, xj1, xj2, xj3;
          pos = (*idx++);
          xj0 = x[pos+0];

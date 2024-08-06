@@ -116,13 +116,13 @@ int quantize_lsp(const float *x, const float *codebook1, const float *codebook2,
 {
   int i, n1, n2, n3;
 
-  float *err = malloc(ndim);
-  float *err2 = malloc(ndim);
-  float *err3 = malloc(ndim);
+  float *err  = alloca(ndim * sizeof(float));
+  float *err2 = alloca(ndim * sizeof(float));
+  float *err3 = alloca(ndim * sizeof(float));
 
-  float *w = malloc(ndim);
-  float *w2 = malloc(ndim);
-  float *w3 = malloc(ndim);
+  float *w  = alloca(ndim * sizeof(float));
+  float *w2 = alloca(ndim * sizeof(float));
+  float *w3 = alloca(ndim * sizeof(float));
 
   w[0] = MIN(x[0], x[1]-x[0]);
   for (i=1;i<ndim-1;i++)
@@ -161,13 +161,6 @@ int quantize_lsp(const float *x, const float *codebook1, const float *codebook2,
     xq[2*i+1] += codebook3[ndim*n3/2+i];
   }
 
-  free(err);
-  free(err2);
-  free(err3);
-
-  free(w);
-  free(w2);
-  free(w3);
   return 0;
 }
 
@@ -189,9 +182,9 @@ void split(float *codebook, int nb_entries, int ndim)
 void split1(float *codebook, int nb_entries, const float *data, int nb_vectors, int ndim)
 {
   int i,j;
-  int *nearest = malloc(nb_vectors);
-  float *dist = malloc(nb_entries);
-  int *count = malloc(nb_entries);
+  int *nearest = alloca(nb_vectors * sizeof(int));
+  float *dist  = alloca(nb_entries * sizeof(float));
+  int *count   = alloca(nb_entries * sizeof(int));
   int worst;
   for (i=0;i<nb_entries;i++)
     dist[i] = 0;
@@ -218,10 +211,6 @@ void split1(float *codebook, int nb_entries, const float *data, int nb_vectors, 
     codebook[worst*ndim+j] += delta;
     codebook[nb_entries*ndim+j] = codebook[worst*ndim+j] - delta;
   }
-
-  free(nearest);
-  free(dist);
-  free(count);
 }
 
 
@@ -229,8 +218,8 @@ void split1(float *codebook, int nb_entries, const float *data, int nb_vectors, 
 void update(float *data, int nb_vectors, float *codebook, int nb_entries, int ndim)
 {
   int i,j;
-  int *count = malloc(nb_entries);
-  int *nearest = malloc(nb_vectors);
+  int *count   = alloca(nb_entries * sizeof(int));
+  int *nearest = alloca(nb_vectors * sizeof(int));
   double err=0;
 
   for (i=0;i<nb_entries;i++)
@@ -266,17 +255,14 @@ void update(float *data, int nb_vectors, float *codebook, int nb_entries, int nd
     small += (count[i] < 50);
   }
   fprintf(stderr, "%f / %d, min = %d, small=%d\n", 1./w2, nb_entries, min_count, small);
-
-  free(count);
-  free(nearest);
 }
 
 void update_multi(float *data, int nb_vectors, float *codebook, int nb_entries, int ndim, int sign)
 {
   int i,j;
-  int *count = malloc(nb_entries);
-  int idcount[8]={0};
-  int *nearest = malloc(nb_vectors);
+  int *count     = alloca(nb_entries * sizeof(int));
+  int idcount[8] = {0};
+  int *nearest   = alloca(nb_vectors * sizeof(int));
   double err=0;
 
   for (i=0;i<nb_entries;i++)
@@ -315,9 +301,6 @@ void update_multi(float *data, int nb_vectors, float *codebook, int nb_entries, 
   }
   fprintf(stderr, "%d %d %d %d %d %d %d %d ", idcount[0], idcount[1], idcount[2], idcount[3], idcount[4], idcount[5], idcount[6], idcount[7]);
   fprintf(stderr, "| %f / %d, min = %d, small=%d\n", 1./w2, nb_entries, min_count, small);
-
-  free(count);
-  free(nearest);
 }
 
 
@@ -326,9 +309,9 @@ void update_weighted(float *data, float *weight, int nb_vectors, float *codebook
   int i,j;
   float *count[MAX_ENTRIES];
   for (i=0; i<MAX_ENTRIES; ++i)
-    count[i] = malloc(5*sizeof(float));
+    count[i] = alloca(ndim * sizeof(float));
 
-  int *nearest = malloc(nb_vectors);
+  int *nearest = alloca(nb_vectors * sizeof(int));
   
   for (i=0;i<nb_entries;i++)
     for (j=0;j<ndim;j++)
@@ -360,11 +343,6 @@ void update_weighted(float *data, float *weight, int nb_vectors, float *codebook
     //w2 += (count[i]/(float)nb_vectors)*(count[i]/(float)nb_vectors);
   }
   //fprintf(stderr, "%f / %d\n", 1./w2, nb_entries);
-
-  for (i=0; i<MAX_ENTRIES; ++i)
-    free(count[i]);
-
-  free(nearest);
 }
 
 void vq_train(float *data, int nb_vectors, float *codebook, int nb_entries, int ndim)
